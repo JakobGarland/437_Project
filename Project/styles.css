@@ -1,0 +1,78 @@
+.base-button{
+    background-color: aqua;
+    height: 75px;
+    width: 150px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 15%;
+}
+
+.weather-img{
+    height: 50px;
+    width: 50px;
+}
+
+.main-div{
+    display: grid;
+    grid-auto-flow: row;
+    height: 600px;
+    width: 900px;
+    border-style: solid;
+    border-color: black;
+    border-width: 5px;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.button-sub-div{
+   text-align: center;
+   display: grid;
+   grid-auto-flow: column;
+   align-items: center;
+   justify-content: center;
+   grid-gap: 5%;
+}
+
+.home-temp-div{
+    text-align: center;
+}
+
+.ac-button{
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+}
+
+.cel-far-button{
+    background-color: white;
+    border-style: none;
+}
+
+#weather-span{
+    padding-left: 75%;
+}
+
+#preset-span{
+    padding-top: 30%;
+}
+
+#home-top-div{
+    margin: 0 auto;
+    width: 850px;
+}
+
+#home-temp{
+    font-size: 500%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#home-para{
+    font-size: 200%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#temp-div{
+}
