@@ -1,3 +1,4 @@
+
 .base-button{
     background-color: aqua;
     border-color: cyan;
@@ -30,6 +31,11 @@
 .weather-img{
     height: 50px;
     width: 50px;
+    padding-left: 5px;
+}
+
+.weather-img:hover{
+    transform: scale(1.15);
 }
 
 .main-div{
@@ -94,7 +100,7 @@
 #weather-span{
     display: inline-block;
     padding-top: 5%;
-    padding-left: 65%;
+    padding-left: 25%;
 }
 
 #preset-span{
@@ -102,7 +108,9 @@
     display: inline-block;
 }
 
-#home-temp{
+.home-temp{
+    text-decoration: none;
+    color: black;
     padding-left: 20px;
     padding-right: 10px;
     font-size: 500%;
@@ -117,4 +125,28 @@
 
 #homeCelButton{
     color: grey;
+}
+
+#weatherCelButton{
+    color: grey;
+}
+
+#weatherFahrButton{
+
+}
+
+#weather-city{
+    padding-left: 75%;
+}
+
+#clock-span{
+    display: inline-block;
+    padding-left: 25.6%;
+    font-weight: bold;
+}
+
+#aq-span{
+    font-size: 500%;
+    display: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
