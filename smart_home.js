@@ -2,12 +2,44 @@ class SmartHome extends React.Component{
     constructor(props){
         super(props);
 
-        this.state = {page:'Home', homeTemp: 70, cityTemp: 76, tempStyle:'F', weatherStyle:'F', clock: new Date()};
+        this.state = {page:'Home', homeTemp: 70, cityTemp: null, tempStyle:'F', weatherStyle:'F', clock: new Date(), loaded: false
+                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"]};
     }
 
     render(){
+
+        this.state.cities.push(["39.29", "-76.61"]);
+        this.state.cities.push(["40.7143", "-74.006"]);
+        this.state.cities.push(["36.175", "-115.1372"]);
+
             if (this.state.page === 'Home')
             {
+                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
+                // JSON result comes in `data` variable
+                console.log(data);
+                var code = data.hourly.weathercode[0];
+                if (code === 95 || code === 96 || code === 99)
+                {
+                    $(".weather-img").attr("src", "imgs/thunder.png")
+                }
+                else if (code === 0)
+                {
+                    $(".weather-img").attr("src", "imgs/sun.png")
+                }
+                else if (code === 51 || code === 53 || code === 55 
+                        ||code === 61 || code === 63 || code === 65
+                        ||code === 80 || code === 81 || code === 82)
+                {
+                    $(".weather-img").attr("src", "imgs/cloud.png")
+                }
+                else if(code === 1 || code === 2 || code ===3)
+                {
+                    $(".weather-img").attr("src", "imgs/overcast.png")
+                }
+
+                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
+                });
+
                 return(
                     <div className = "main-div">
                         
@@ -25,10 +57,10 @@ class SmartHome extends React.Component{
                             </span>
 
                             <span id="weather-span">
-                                <a>Baltimore MD</a>
+                                <a id="weather-city">{this.state.cityNames[this.state.currCity]}</a>
                                 <br></br>
-                                <a>
-                                    {this.state.cityTemp}° <img src="imgs/cloud.png" className = "weather-img" onClick={() => {this.setState({page: 'Weather'})}}></img>
+                                <a id="weather-anchor">
+                                    <span id="weather-temp"></span> <img className = "weather-img" onClick={() => {this.setState({page: 'Weather'})}}></img>
                                 </a>
                             </span>
                         </div>
@@ -84,72 +116,119 @@ class SmartHome extends React.Component{
                 );
             }
             else if (this.state.page === 'Weather'){
+                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
+                // JSON result comes in `data` variable
+                var code = data.hourly.weathercode[0];
+                if (code === 95 || code === 96 || code === 99)
+                {
+                    $(".weather-img").attr("src", "imgs/thunder.png")
+                }
+                else if (code === 0)
+                {
+                    $(".weather-img").attr("src", "imgs/sun.png")
+                }
+                else if (code === 51 || code === 53 || code === 55 
+                        ||code === 61 || code === 63 || code === 65
+                        ||code === 80 || code === 81 || code === 82)
+                {
+                    $(".weather-img").attr("src", "imgs/cloud.png")
+                }
+                else if(code === 1 || code === 2 || code ===3)
+                {
+                    $(".weather-img").attr("src", "imgs/overcast.png")
+                }
+
+                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
+                document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
+                document.getElementById("wind").innerHTML = "Wind-Speed: "+ data.hourly.windspeed_10m[167]+" mph";
+                document.getElementById("precip").innerHTML = "Precipitation: " + data.hourly.precipitation[167]+" in";
+                document.getElementById("precip-prob").innerHTML = "Chance of Rain: " + data.hourly.precipitation_probability[167]+"%";
+                });
+
                 return(
                     <div className = "main-div">
                         <div className="top-div">
                         <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Home</button>
-                        <a id="weather-city">Baltimore, MD</a>
+                        <select name= {this.state.cityNames[this.state.currCity]}id="weather-city-page" onClick={() => {
+                                var choice = document.getElementById("weather-city-page").value;
+                                if (choice === "Baltimore")
+                                    this.state.currCity = 0;
+                                else if (choice === "New York")
+                                    this.state.currCity = 1;
+                                else
+                                this.state.currCity = 2;
+
+                                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
+                                // JSON result comes in `data` variable
+                                var code = data.hourly.weathercode[0];
+                                if (code === 95 || code === 96 || code === 99)
+                                {
+                                    $(".weather-img").attr("src", "imgs/thunder.png")
+                                }
+                                else if (code === 0)
+                                {
+                                    $(".weather-img").attr("src", "imgs/sun.png")
+                                }
+                                else if (code === 51 || code === 53 || code === 55 
+                                        ||code === 61 || code === 63 || code === 65
+                                        ||code === 80 || code === 81 || code === 82)
+                                {
+                                    $(".weather-img").attr("src", "imgs/cloud.png")
+                                }
+                                else if(code === 1 || code === 2 || code ===3)
+                                {
+                                    $(".weather-img").attr("src", "imgs/overcast.png")
+                                }
+
+                                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
+                                document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
+                                document.getElementById("wind").innerHTML = "Wind-Speed: "+ data.hourly.windspeed_10m[167]+" mph";
+                                document.getElementById("precip").innerHTML = "Precipitation: " + data.hourly.precipitation[167]+" in";
+                                document.getElementById("precip-prob").innerHTML = "Chance of Rain: " + data.hourly.precipitation_probability[167]+"%";
+                                });
+                            }
+                            } >
+                            <option value ="Baltimore">Baltimore MD</option>
+                            <option value ="New York" >New York NY</option>
+                            <option value ="Las Vegas">Las Vegas NV</option>
+                        </select>
                         </div>
 
                         <div className = "home-temp-div">
                             <div id="temp-div">
-                            <img id="w-img" src="imgs/cloud.png" className = "weather-img" onClick={() => {this.setState({page: 'Weather'})}}></img>
+                            <img id="w-img" className = "weather-img" onClick={() => {this.setState({page: 'Weather'})}}></img>
                             <br></br>
                             <span id="weather-temp" className="home-temp">
-                                {this.state.cityTemp}°
                             </span>
-                            <span id="aq-span">
-                                Test
+                            <span id="aq-span" className="home-temp">
+                            </span>
+                            <span id="gen-span" className="home-temp">
+                                <p id="wind"></p>
+                                <p id="precip"></p>
+                                <p id="precip-prob"></p>
                             </span>
                             </div>
-
-                            <button id="weatherCelButton" onClick={() => {
-                                if(this.state.weatherStyle === 'F')
-                                    {
-                                        this.setState({cityTemp: parseInt((this.state.cityTemp-32)*.5556)}); 
-                                        this.setState({weatherStyle:'C'})
-                                        document.getElementById("homeFahrButton").style.color = "grey";
-                                        document.getElementById("homeCelButton").style.color = "black";
-                                    }
-                                }
-                            } 
-                            className = "cel-far-button">C
-                            </button>
-
-                            <a id="button-slash">/</a>
-
-                            <button id="weatherFahrButton" onClick={() => {
-                                if(this.state.weatherStyle === 'C')
-                                    {
-                                        this.setState({cityTemp: parseInt((this.state.cityTemp*(9/5))+32)}); 
-                                        this.setState({weatherStyle:'F'})
-                                        document.getElementById("homeCelButton").style.color = "grey";
-                                        document.getElementById("homeFahrButton").style.color = "black";
-                                    }
-                                }
-                            } 
-                            className = "cel-far-button">F
-                            </button>
                         </div>
 
                         <div className = "button-sub-div">
                             <button onClick={() => {
                                 document.getElementById("weather-temp").style.display = "none";
                                 document.getElementById("aq-span").style.display = "initial";
-                                document.getElementById("weatherCelButton").style.display = "none";
-                                document.getElementById("weatherFahrButton").style.display = "none";
-                                document.getElementById("button-slash").style.display = "none";
+                                document.getElementById("gen-span").style.display = "none";
                                 document.getElementById("w-img").style.display = "none";
                                 }} className="base-button">Air Quality</button>
                             <button onClick={() => {
                                 document.getElementById("weather-temp").style.display = "initial";
                                 document.getElementById("aq-span").style.display = "none";
-                                document.getElementById("weatherCelButton").style.display = "initial";
-                                document.getElementById("weatherFahrButton").style.display = "initial";
-                                document.getElementById("button-slash").style.display = "initial";
+                                document.getElementById("gen-span").style.display = "none";
                                 document.getElementById("w-img").style.display = "initial";
                             }} className="base-button" >Weather</button>
-                            <button onClick={() => {this.setState({page: 'A/C'})}} className="base-button" >Percipitation</button>
+                            <button onClick={() => {
+                                document.getElementById("weather-temp").style.display = "none";
+                                document.getElementById("gen-span").style.display = "initial";
+                                document.getElementById("aq-span").style.display = "none";
+                                document.getElementById("w-img").style.display = "none";
+                                }} className="base-button" >Area Info</button>
                         </div>
                     </div>
                 );

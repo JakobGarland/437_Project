@@ -127,16 +127,16 @@
     color: grey;
 }
 
-#weatherCelButton{
-    color: grey;
-}
-
-#weatherFahrButton{
+#weather-temp{
 
 }
 
 #weather-city{
-    padding-left: 75%;
+    padding-left: 0%;
+}
+#weather-city-page{
+    margin-top: 2%;
+    margin-left: 70%;
 }
 
 #clock-span{
@@ -146,7 +146,14 @@
 }
 
 #aq-span{
-    font-size: 500%;
+    padding-bottom: 10%;
+    font-size: 400%;
+    display: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#gen-span{
+    font-size: 200%;
     display: none;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
