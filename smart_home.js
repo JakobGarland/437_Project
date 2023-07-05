@@ -121,21 +121,21 @@ class SmartHome extends React.Component{
             if(this.state.ice == 1){
                 this.state.ice = 2;
                 return(
-                    <div>
+                    <div className ="ice-div">
                         <img className = "ice" src = "imgs/Cube.png"></img>
                     </div>
                 );
             }else if(this.state.ice == 2){
                 this.state.ice = 3;
                 return(
-                    <div>
+                    <div className ="ice-div"> 
                         <img className = "ice" src = "imgs/Crescent.png"></img>
                     </div>
                 )
             }else{
                 this.state.ice = 1;
                 return(
-                    <div>
+                    <div className ="ice-div">
                         <img className = "ice" src = "imgs/Flake.png"></img>
                     </div>
                 );
