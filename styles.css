@@ -222,6 +222,34 @@
     margin-left: 200px;
 }
 
-#room-select{
+.roomSelect{
+    position: absolute;
+    width: 110px;
+    top: 65px;
     margin-left: 75%;
 }
+
+#add{
+    position: absolute;
+    top: 30px;
+    margin-left: 54%;
+    
+}
+
+#addButton{
+    width: 110px;
+}
+
+
+#delete{
+    position: absolute;
+    width: 110px;
+    top: 30px;
+    margin-left: 75%;
+}
+
+.therm{
+    text-align: center;
+
+}
+

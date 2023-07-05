@@ -3,14 +3,17 @@ class SmartHome extends React.Component{
         super(props);
 
         this.state = {page:'Home', homeTemp: 70, cityTemp: null, tempStyle:'F', weatherStyle:'F', clock: new Date(), loaded: false
-                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0};
+                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0, AC: "Home"};
     }
 
     renderFridge(){
         if(this.state.freezer == 1){
             return(
                 <div id = "fridge">
-                    <Therm name="Fridge"/>
+                    <span className = "therm">
+                        <Therm name="Fridge"/>
+                    </span>
+                    
                 </div>
             )
         }else if(this.state.freezer == 2){
@@ -40,27 +43,15 @@ class SmartHome extends React.Component{
         }else{
             return(
                 <div id = "freezer">
-                    <Therm name="Freezer"/>
+                    <span className = "therm">
+                        <Therm name="Freezer"/>
+                    </span>
+                    
                 </div>
             )
         }
     }
 
-    renderAC(){
-        return(
-            <div>
-                <select name= {"Home"} id="room-select" onClick={() => {}}>
-                    <option value ="Home">Home</option>
-                    <option value ="New" >Add Room</option>
-                </select>
-                <br></br>
-                <br></br>
-                <br></br>
-                <br></br>
-                <Therm name="Home"></Therm>
-            </div>
-        );
-    }
 
     render(){
 
@@ -120,8 +111,10 @@ class SmartHome extends React.Component{
                                 </a>
                             </span>
                         </div>
-
-                        <Therm name="Home"></Therm>
+                        <span className = "therm">
+                            <Therm name="Home"></Therm>
+                        </span>
+                        
 
                         <div className = "button-sub-div">
                             <button onClick={() => {this.setState({page: 'Fridge'})}} className="base-button">Fridge</button>
@@ -287,9 +280,12 @@ class SmartHome extends React.Component{
                 return(
                     <div className = "main-div">
                         <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
-                        
+                            <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
                         </div>
+                        
+                            <Rooms></Rooms>
+                        
+                        
                     </div>
                 );
             }

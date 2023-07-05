@@ -115,3 +115,72 @@ class Therm extends React.Component{
         );
     }
 }
+
+class Rooms extends React.Component {
+    constructor(props) {
+      super(props);
+      const storedRooms = localStorage.getItem('rooms');
+      this.state = {
+        rooms: storedRooms ? JSON.parse(storedRooms) : ["Home"],
+        newRoom: "",
+        selectedOption: "Home",
+      };
+    }
+  
+    componentDidUpdate() {
+      const { rooms } = this.state;
+      localStorage.setItem('rooms', JSON.stringify(rooms));
+    }
+  
+    handleInputChange = (event) => {
+      this.setState({newRoom: event.target.value});
+    };
+  
+    handleSelectChange = (event) => {
+      this.setState({ selectedOption: event.target.value });
+    };
+  
+    handleAddRoom = () => {
+      const { rooms, newRoom, selectedOption } = this.state;
+      if (selectedOption === "Add Room" && newRoom.trim() !== "") {
+        const updatedRooms = [...rooms, newRoom];
+        this.setState({ rooms: updatedRooms, newRoom: "", selectedOption: newRoom});
+      }
+    };
+
+    handleDeleteRoom = (roomToDelete) => {
+        const { rooms } = this.state;
+        const updatedRooms = rooms.filter((room) => room !== roomToDelete);
+        this.setState({ rooms: updatedRooms, selectedOption: "Add Room"});
+    };
+  
+    render() {
+      const { rooms, newRoom, selectedOption } = this.state;
+  
+      return (
+        <div>
+            <select className = "roomSelect" value={selectedOption} onChange={this.handleSelectChange}>
+                {rooms.map((room) => (
+                    <option key={room}>{room}</option>
+                ))}
+                <option value="Add Room">Add Room</option>
+            </select>
+            <span className = "therm"></span>
+                <Therm name={selectedOption}></Therm>
+            <span/>
+            {selectedOption === "Add Room" && (
+                <div id = "add">
+                <input id="addField" type="text" value={newRoom} onChange={this.handleInputChange} />
+                <button id="addButton" onClick={this.handleAddRoom}>Add Room</button>
+                </div>
+            )}
+
+            {selectedOption !== "Add Room" && (
+                <div>
+                    <button id = "delete" onClick={() => this.handleDeleteRoom(selectedOption)}>Delete Room</button>
+                </div>
+            )}
+        </div>
+      );
+    }
+  }
