@@ -2,8 +2,7 @@ class SmartHome extends React.Component{
     constructor(props){
         super(props);
 
-        this.state = {page:'Home', homeTemp: 70, cityTemp: null, tempStyle:'F', weatherStyle:'F', clock: new Date(), loaded: false
-                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0};
+        this.state = {page:'Home', homeTemp: 70, cityTemp: null, cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0};
     }
 
     renderFridge(){
@@ -62,17 +61,9 @@ class SmartHome extends React.Component{
         );
     }
 
-    render(){
-
-        this.state.cities.push(["39.29", "-76.61"]);
-        this.state.cities.push(["40.7143", "-74.006"]);
-        this.state.cities.push(["36.175", "-115.1372"]);
-
-            if (this.state.page === 'Home')
-            {
-                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
+    loadWeather(page){
+        $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
                 // JSON result comes in `data` variable
-                console.log(data);
                 var code = data.hourly.weathercode[0];
                 if (code === 95 || code === 96 || code === 99)
                 {
@@ -93,8 +84,30 @@ class SmartHome extends React.Component{
                     $(".weather-img").attr("src", "imgs/overcast.png")
                 }
 
-                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
-                });
+                if (page === "weather")
+                {
+                    document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
+                    document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
+                    document.getElementById("wind").innerHTML = "Wind-Speed: "+ data.hourly.windspeed_10m[167]+" mph";
+                    document.getElementById("precip").innerHTML = "Precipitation: " + data.hourly.precipitation[167]+" in";
+                    document.getElementById("precip-prob").innerHTML = "Chance of Rain: " + data.hourly.precipitation_probability[167]+"%";
+                }
+                else if (page === "home")
+                {
+                    document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
+                }
+            });
+    }
+
+    render(){
+
+        this.state.cities.push(["39.29", "-76.61"]);
+        this.state.cities.push(["40.7143", "-74.006"]);
+        this.state.cities.push(["36.175", "-115.1372"]);
+
+            if (this.state.page === 'Home')
+            {
+                this.loadWeather("home");
 
                 return(
                     <div className = "main-div">
@@ -132,35 +145,7 @@ class SmartHome extends React.Component{
                 );
             }
             else if (this.state.page === 'Weather'){
-                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
-                // JSON result comes in `data` variable
-                var code = data.hourly.weathercode[0];
-                if (code === 95 || code === 96 || code === 99)
-                {
-                    $(".weather-img").attr("src", "imgs/thunder.png")
-                }
-                else if (code === 0)
-                {
-                    $(".weather-img").attr("src", "imgs/sun.png")
-                }
-                else if (code === 51 || code === 53 || code === 55 
-                        ||code === 61 || code === 63 || code === 65
-                        ||code === 80 || code === 81 || code === 82)
-                {
-                    $(".weather-img").attr("src", "imgs/cloud.png")
-                }
-                else if(code === 1 || code === 2 || code ===3)
-                {
-                    $(".weather-img").attr("src", "imgs/overcast.png")
-                }
-
-                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
-                document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
-                document.getElementById("wind").innerHTML = "Wind-Speed: "+ data.hourly.windspeed_10m[167]+" mph";
-                document.getElementById("precip").innerHTML = "Precipitation: " + data.hourly.precipitation[167]+" in";
-                document.getElementById("precip-prob").innerHTML = "Chance of Rain: " + data.hourly.precipitation_probability[167]+"%";
-                });
-
+                this.loadWeather("weather");
                 return(
                     <div className = "main-div">
                         <div className="top-div">
@@ -174,34 +159,7 @@ class SmartHome extends React.Component{
                                 else
                                 this.state.currCity = 2;
 
-                                $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
-                                // JSON result comes in `data` variable
-                                var code = data.hourly.weathercode[0];
-                                if (code === 95 || code === 96 || code === 99)
-                                {
-                                    $(".weather-img").attr("src", "imgs/thunder.png")
-                                }
-                                else if (code === 0)
-                                {
-                                    $(".weather-img").attr("src", "imgs/sun.png")
-                                }
-                                else if (code === 51 || code === 53 || code === 55 
-                                        ||code === 61 || code === 63 || code === 65
-                                        ||code === 80 || code === 81 || code === 82)
-                                {
-                                    $(".weather-img").attr("src", "imgs/cloud.png")
-                                }
-                                else if(code === 1 || code === 2 || code ===3)
-                                {
-                                    $(".weather-img").attr("src", "imgs/overcast.png")
-                                }
-
-                                document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
-                                document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
-                                document.getElementById("wind").innerHTML = "Wind-Speed: "+ data.hourly.windspeed_10m[167]+" mph";
-                                document.getElementById("precip").innerHTML = "Precipitation: " + data.hourly.precipitation[167]+" in";
-                                document.getElementById("precip-prob").innerHTML = "Chance of Rain: " + data.hourly.precipitation_probability[167]+"%";
-                                });
+                                this.loadWeather("weather");
                             }
                             } >
                             <option value ="Baltimore">Baltimore MD</option>
