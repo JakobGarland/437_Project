@@ -3,7 +3,63 @@ class SmartHome extends React.Component{
         super(props);
 
         this.state = {page:'Home', homeTemp: 70, cityTemp: null, tempStyle:'F', weatherStyle:'F', clock: new Date(), loaded: false
-                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"]};
+                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0};
+    }
+
+    renderFridge(){
+        if(this.state.freezer == 1){
+            return(
+                <div id = "fridge">
+                    <Therm name="Fridge"/>
+                </div>
+            )
+        }else if(this.state.freezer == 2){
+            if(this.state.ice == 1){
+                this.state.ice = 2;
+                return(
+                    <div>
+                        <img className = "ice" src = "imgs/Cube.png"></img>
+                    </div>
+                );
+            }else if(this.state.ice == 2){
+                this.state.ice = 3;
+                return(
+                    <div>
+                        <img className = "ice" src = "imgs/Crescent.png"></img>
+                    </div>
+                )
+            }else{
+                this.state.ice = 1;
+                return(
+                    <div>
+                        <img className = "ice" src = "imgs/Flake.png"></img>
+                    </div>
+                );
+            }
+            
+        }else{
+            return(
+                <div id = "freezer">
+                    <Therm name="Freezer"/>
+                </div>
+            )
+        }
+    }
+
+    renderAC(){
+        return(
+            <div>
+                <select name= {"Home"} id="room-select" onClick={() => {}}>
+                    <option value ="Home">Home</option>
+                    <option value ="New" >Add Room</option>
+                </select>
+                <br></br>
+                <br></br>
+                <br></br>
+                <br></br>
+                <Therm name="Home"></Therm>
+            </div>
+        );
     }
 
     render(){
@@ -65,47 +121,7 @@ class SmartHome extends React.Component{
                             </span>
                         </div>
 
-                        <div className = "home-temp-div">
-                            <p id="home-para">
-                                HOME
-                            </p>
-
-                            <div id="temp-div">
-                            <button onClick={() => {this.setState({homeTemp: this.state.homeTemp-1})}} className="ac-cool-button">-</button>
-                            <span className="home-temp">
-                                {this.state.homeTemp}°
-                            </span>
-                            <button onClick={() => {this.setState({homeTemp: this.state.homeTemp+1})}} className="ac-hot-button">+</button>
-                            </div>
-
-                            <button id="homeCelButton" onClick={() => {
-                                if(this.state.tempStyle === 'F')
-                                    {
-                                        this.setState({homeTemp: parseInt((this.state.homeTemp-32)*.5556)}); 
-                                        this.setState({tempStyle:'C'})
-                                        document.getElementById("homeFahrButton").style.color = "grey";
-                                        document.getElementById("homeCelButton").style.color = "black";
-                                    }
-                                }
-                            } 
-                            className = "cel-far-button">C
-                            </button>
-
-                            <a>/</a>
-
-                            <button id="homeFahrButton" onClick={() => {
-                                if(this.state.tempStyle === 'C')
-                                    {
-                                        this.setState({homeTemp: parseInt((this.state.homeTemp*(9/5))+32)}); 
-                                        this.setState({tempStyle:'F'})
-                                        document.getElementById("homeCelButton").style.color = "grey";
-                                        document.getElementById("homeFahrButton").style.color = "black";
-                                    }
-                                }
-                            } 
-                            className = "cel-far-button">F
-                            </button>
-                        </div>
+                        <Therm name="Home"></Therm>
 
                         <div className = "button-sub-div">
                             <button onClick={() => {this.setState({page: 'Fridge'})}} className="base-button">Fridge</button>
@@ -148,7 +164,7 @@ class SmartHome extends React.Component{
                 return(
                     <div className = "main-div">
                         <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Home</button>
+                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
                         <select name= {this.state.cityNames[this.state.currCity]}id="weather-city-page" onClick={() => {
                                 var choice = document.getElementById("weather-city-page").value;
                                 if (choice === "Baltimore")
@@ -237,7 +253,32 @@ class SmartHome extends React.Component{
                 return(
                     <div className = "main-div">
                         <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Home</button>
+                            <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
+                            <span id = "filter-span">
+                                <a id="filter-stat">Filter Status</a>
+                                <img className = "filter-img" src = "imgs/filter-green.png"></img>
+                            </span>
+                        </div>
+
+                        {this.renderFridge()}
+                        {console.log("Rendered" + this.state.freezer)}
+
+
+                        <div className = "button-sub-div">
+                            <button onClick={() => {
+                                this.setState({freezer: 1})
+                                }} className="base-button">Fridge
+                            </button>
+
+                            <button onClick={() => {
+                                this.setState({freezer: 2})
+                                }} className="base-button">Ice Shape
+                            </button>
+
+                            <button onClick={() => {
+                                this.setState({freezer: 3})
+                                }} className="base-button">Freezer
+                            </button>
                         </div>
                     </div>
                 );
@@ -246,7 +287,8 @@ class SmartHome extends React.Component{
                 return(
                     <div className = "main-div">
                         <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Home</button>
+                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
+                        
                         </div>
                     </div>
                 );
@@ -255,7 +297,7 @@ class SmartHome extends React.Component{
                 return(
                     <div className = "main-div">
                         <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Home</button>
+                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
                         </div>
                     </div>
                 );

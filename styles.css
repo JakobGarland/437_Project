@@ -69,6 +69,11 @@
     height: 80%;
 }
 
+.fridge-temp-div{
+    text-align: center;
+    height: 80%;
+}
+
 .ac-hot-button{
     color: red;
     border-color: red;
@@ -117,7 +122,22 @@
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
+.fridge-temp{
+    text-decoration: none;
+    color: black;
+    padding-left: 20px;
+    padding-right: 10px;
+    font-size: 500%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
 #home-para{
+    height: 30px;
+    font-size: 200%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#fridge-para{
     height: 30px;
     font-size: 200%;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
@@ -156,4 +176,29 @@
     font-size: 200%;
     display: none;
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#filter-span{
+    display: inline-block;
+    padding-left: 70%;
+}
+
+
+.filter-img{
+    height: 50px;
+    width: 50px;
+}
+
+.thermometer{
+    text-align: center;
+}
+
+.ice{
+    height: 250px;
+    width: 500px;
+    margin-left: 200px;
+}
+
+#room-select{
+    margin-left: 75%;
 }
