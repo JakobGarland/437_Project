@@ -10,6 +10,10 @@
     font-weight: bold;
 }
 
+.base-button:hover{
+    transform: scale(1.05);
+}
+
 .home-button{
     background-color: aqua;
     border-color: cyan;
@@ -19,6 +23,10 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border-radius: 30%;
     font-weight: bold;
+}
+
+.home-button:hover{
+    transform: scale(1.05);
 }
 
 .top-div{
@@ -70,8 +78,9 @@
 }
 
 .ac-hot-button{
-    color: red;
+    color: white;
     border-color: red;
+    background-color: red;
     border-width: 7px;
     font-size: 150%;
     border-radius: 50%;
@@ -80,21 +89,35 @@
     font-weight: bold;
 }
 
+.ac-hot-button:hover{
+    transform: scale(1.05);
+}
+
 .ac-cool-button{
-    color: cyan;
+    color: white;
     border-color: cyan;
+    background-color: cyan;
     border-width: 7px;
     font-size: 150%;
     border-radius: 50%;
     height: 50px;
     width: 50px;
     font-weight: bold;
+}
+
+.ac-cool-button:hover{
+    transform: scale(1.05);
 }
 
 .cel-far-button{
     font-weight: bold;
     background-color: white;
     border-style: none;
+}
+
+.cel-far-button:hover{
+    transform: scale(1.15);
+    background: none;
 }
 
 #weather-span{
