@@ -2,8 +2,37 @@ class SmartHome extends React.Component{
     constructor(props){
         super(props);
 
-        this.state = {page:'Home', homeTemp: 70, cityTemp: null, tempStyle:'F', weatherStyle:'F', clock: new Date(), loaded: false
-                      ,cities:[], currCity: 0, cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], freezer: 1, ice: 0, AC: "Home"};
+        this.state = {
+            page:'Home', 
+            homeTemp: 70, 
+            cityTemp: null, 
+            tempStyle:'F', 
+            weatherStyle:'F', 
+            clock: new Date(), 
+            loaded: false,
+            cities:[], 
+            currCity: 0, 
+            cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], 
+            freezer: 1, 
+            ice: 0, 
+            AC: "Home",
+            
+            // items for scheduling
+            startTime: '',
+            endTime: '',
+            sundayChecked: false,
+            mondayChecked: false,
+            tuesdayChecked: false,
+            wednesdayChecked: false,
+            thursdayChecked: false,
+            fridayChecked: false,
+            saturdayChecked: false,
+            schedules: [],
+            selectedSchedule: '', // currently selected schedule
+            rooms: [],
+            newRoom: '',        // new room input value
+            selectedRoom: ''    // currently selected room
+        };
     }
 
     handleAddRoom = (event) => {
@@ -335,31 +364,478 @@ class SmartHome extends React.Component{
                         </div>
                     </div>
                 );
-            }
-            else if (this.state.page === 'A/C'){
-                return(
-                    <div className = "main-div">
-                        <div className="top-div">
-                            <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
-                        
-                        </div>
-                        <Rooms></Rooms>
-                    </div>
-                );
-            }
-            else if (this.state.page === 'Scheduling'){
-                return(
-                    <div className = "main-div">
-                        <div className="top-div">
+        }
+        else if (this.state.page === 'A/C'){
+            return(
+                <div className = "main-div">
+                    <div className="top-div">
                         <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
-                        </div>
+                    
                     </div>
-                );
-            }
-            
+                    <Rooms></Rooms>
+                </div>
+            );
+        }
+        else if (this.state.page === 'Scheduling'){
+            return(
+                <div className = "main-div">
+                    <div className="top-div">
+                    <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
+                    </div>
+
+                    <h1 className="center-h1">Scheduling Home Page</h1>
+
+                    <div className="button-sub-div">
+                        <button onClick={() => { this.setState({ page: 'Climate' }) }} className="base-button">Climate</button>
+                        <button onClick={() => { this.setState({ page: 'Garden' }) }} className="base-button">Garden</button>
+                        <button onClick={() => { this.setState({ page: 'Appliances' }) }} className="base-button">Appliances</button>
+                    </div>                 
+                </div>
+            );
+        }
+        else if (this.state.page === 'Climate') {
+            const days = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
+            const scheduleOptions = this.state.schedules.map((schedule, index) => (
+                <option key={index} value={index}>
+                    Schedule {index + 1} - Room: {schedule.room}, Temperature: {schedule.temperature}°{this.state.tempStyle}
+                </option>
+            ));              
+
+            return (
+                <div className="main-div">
+                    <div className="top-div">
+                        <button
+                            onClick={() => {
+                            this.setState({ page: "Scheduling" });
+                            }}
+                            className="home-button">Back
+                        </button>
+                    </div>
+                    
+
+                    <div className="room-selector" id="c-add-room">
+                        <label htmlFor="newRoom">Add Room:</label>
+                        <input
+                            type="text"
+                            id="newRoom"
+                            name="newRoom"
+                            value={this.state.newRoom}
+                            onChange={this.handleInputChange}/>
+
+                        <button onClick={this.handleAddRoom} className="btn btn-primary">Add</button>
+                        
+                        <select
+                            value={this.state.selectedRoom}
+                            onChange={(event) => {
+                                const selectedRoom = event.target.value;
+                                this.setState({ selectedRoom });
+                            }}>
+
+                            <option value="">Select Room</option>
+                            {this.state.rooms.map((room, index) => (
+                                <option key={index} value={room}>
+                                {room}
+                                </option>
+                            ))}
+                        </select>                        
+                    </div>
+
+                    <div className="home-temp-div">
+                        <p id="home-para">Climate Schedule</p>
+
+                        <div id="temp-div">
+                        <button
+                            onClick={() => {
+                            this.setState({ homeTemp: this.state.homeTemp - 1 });
+                            }}
+                            className="ac-cool-button">-</button>   {/* add '-' button */}
+                        <span className="home-temp">{this.state.homeTemp}°</span>
+                        <button
+                            onClick={() => {
+                            this.setState({ homeTemp: this.state.homeTemp + 1 });
+                            }}
+                            className="ac-hot-button">+</button>
+                        </div>
+
+                        <button
+                            id="homeCelButton"
+                            onClick={() => {
+                                if (this.state.tempStyle === "F") {
+                                this.setState({
+                                    homeTemp: parseInt((this.state.homeTemp - 32) * 0.5556)
+                                });
+                                this.setState({ tempStyle: "C" });
+                                document.getElementById("homeFahrButton").style.color = "grey";
+                                document.getElementById("homeCelButton").style.color = "black";
+                                }
+                            }}
+                            className="cel-far-button">C
+                        </button>
+
+                        <a>/</a>    
+
+                        <button
+                        id="homeFahrButton"
+                        onClick={() => {
+                            if (this.state.tempStyle === "C") {
+                            this.setState({
+                                homeTemp: parseInt((this.state.homeTemp * 9) / 5 + 32)
+                            });
+                            this.setState({ tempStyle: "F" });
+                            document.getElementById("homeCelButton").style.color = "grey";
+                            document.getElementById("homeFahrButton").style.color = "black";
+                            }
+                        }}
+                        className="cel-far-button"
+                        >
+                        F
+                        </button>
+                    </div>
+
+                    <div className="checkbox-container" id="c-checkboxes">
+                        {days.map((day) => (
+                            <div key={day}>
+                                <input
+                                type="checkbox"
+                                id={day.toLowerCase()}
+                                name={day.toLowerCase() + "Checked"}
+                                checked={this.state[day.toLowerCase() + "Checked"]}
+                                onChange={this.handleInputChange}/>
+
+                                <label htmlFor={day.toLowerCase()}>{day}</label>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="start-end-container">
+                        <label htmlFor={"start"}>Start Time:</label>
+                        <input
+                        type="time"
+                        id={"start"}
+                        name="startTime"
+                        value={this.state.startTime}
+                        onChange={this.handleInputChange}/>
+
+                        <label htmlFor={"end"}>End Time:</label>
+                        <input
+                        type="time"
+                        id={"end"}
+                        name="endTime"
+                        value={this.state.endTime}
+                        onChange={this.handleInputChange}/>
+                    </div>
+
+                    <select
+                        value={this.state.selectedSchedule}
+                        onChange={this.handleSelectSchedule}>
+
+                        <option value="">Select Schedule</option>
+                        {scheduleOptions}
+                    </select>                    
+
+                    <div className="button-sub-div">
+                        <button onClick={this.handleSaveSchedule}
+                                className="base-button"
+                                >Save Schedule
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                const { selectedSchedule } = this.state;
+                                if (selectedSchedule !== "") {
+                                    const updatedSchedules = this.state.schedules.filter(
+                                    (schedule, index) => index !== parseInt(selectedSchedule)
+                                    );
+
+                                    this.setState({
+                                    schedules: updatedSchedules,
+                                    selectedSchedule: "",
+                                    startTime: "",
+                                    endTime: "",
+                                    sundayChecked: false,
+                                    mondayChecked: false,
+                                    tuesdayChecked: false,
+                                    wednesdayChecked: false,
+                                    thursdayChecked: false,
+                                    fridayChecked: false,
+                                    saturdayChecked: false,
+                                    homeTemp: 70,
+                                    tempStyle: "F"
+                                    });
+                                }
+                            }}
+                            className="delete-button">
+                            Delete Schedule
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        else if (this.state.page === 'Garden') {
+            const days = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
+            const scheduleOptions = this.state.schedules.map((schedule, index) => (
+                <option key={index} value={index}>
+                Schedule {index + 1}    {/* indexes schedule */}
+                </option>
+            ));
+
+            return (
+                <div className="main-div">                    
+                    <div className="top-div">
+                        <button
+                            onClick={() => {
+                            this.setState({ page: "Scheduling" });
+                            }}
+                            className="home-button"
+                        >
+                            Back
+                        </button>
+                    </div>
+                    
+                    <h1 className="center-h1">Garden Schedule</h1>
+
+                    <div className="checkbox-container" id={"g-checkboxes"}>
+                        {days.map((day) => (
+                            <div key={day}>
+                                <input
+                                type="checkbox"
+                                id={day.toLowerCase()}
+                                name={day.toLowerCase() + "Checked"}
+                                checked={this.state[day.toLowerCase() + "Checked"]}
+                                onChange={this.handleInputChange}
+                                />
+                                <label htmlFor={day.toLowerCase()}>{day}</label>
+                            </div>
+                        ))}
+                    </div>
+
+                    <div className="start-end-container" id={"g-start-time"}>
+                        <label htmlFor={"start"}>Start Time:</label>
+                        <input
+                        type="time"
+                        id={"start"}
+                        name="startTime"
+                        value={this.state.startTime}
+                        onChange={this.handleInputChange}
+                        />
+
+                        <label htmlFor={"end"}>End Time:</label>
+                        <input
+                        type="time"
+                        id={"end"}
+                        name="endTime"
+                        value={this.state.endTime}
+                        onChange={this.handleInputChange}
+                        />
+                    </div>
+
+                    <select
+                        value={this.state.selectedSchedule}
+                        onChange={this.handleSelectSchedule}
+                    >
+                        <option value="">Select Schedule</option>
+                        {scheduleOptions}
+                    </select>
+
+                    <div className="button-sub-div">
+                        <button
+                            onClick={this.handleSaveSchedule}
+                            className="base-button">
+                            Save Schedule
+                        </button>
+
+                        <button
+                            onClick={() => {
+                            const { selectedSchedule } = this.state;
+                            if (selectedSchedule !== "") {
+                                const updatedSchedules = this.state.schedules.filter(
+                                (schedule, index) => index !== parseInt(selectedSchedule)
+                                );
+
+                                this.setState({
+                                schedules: updatedSchedules,
+                                selectedSchedule: "",
+                                startTime: "",
+                                endTime: "",
+                                sundayChecked: false,
+                                mondayChecked: false,
+                                tuesdayChecked: false,
+                                wednesdayChecked: false,
+                                thursdayChecked: false,
+                                fridayChecked: false,
+                                saturdayChecked: false,
+                                homeTemp: 70,
+                                tempStyle: "F"
+                                });
+                            }
+                            }}
+                            className = "delete-button">
+                            Delete Schedule
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        else if (this.state.page === 'Appliances') {
+            const days = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
+            const scheduleOptions = this.state.schedules.map((schedule, index) => (
+                <option key={index} value={index}>
+                    Schedule {index + 1} - Room: {schedule.room}
+                </option>
+            )); 
+
+            return (
+                <div className="main-div">
+                    <div className="top-div">
+                        <button
+                            onClick={() => {
+                            this.setState({ page: "Scheduling" });
+                            }}
+                            className="home-button"
+                        >
+                            Back
+                        </button>
+                    </div>
+
+                    <h1 className="center-h1"> Appliance Schedule</h1>                   
+
+                    <div className="room-selector" id="a-add-item">
+                        <label htmlFor="newRoom">Add Item:</label>
+                        <input
+                            type="text"
+                            id="newRoom"
+                            name="newRoom"
+                            value={this.state.newRoom}
+                            onChange={this.handleInputChange}
+                        />
+                        <button onClick={this.handleAddRoom} className="btn btn-primary">
+                            Add
+                        </button>
+                        <select
+                            value={this.state.selectedRoom}
+                            onChange={(event) => {
+                                const selectedRoom = event.target.value;
+                                this.setState({ selectedRoom });
+                            }}
+                            >
+                            <option value="">Select Item</option>
+                            {this.state.rooms.map((room, index) => (
+                                <option key={index} value={room}>
+                                {room}
+                                </option>
+                            ))}
+                        </select>                        
+                    </div>                    
+
+                    <div className="checkbox-container" id={"a-checkboxes"}>
+                        {days.map((day) => (
+                        <div key={day}>
+                            <input
+                            type="checkbox"
+                            id={day.toLowerCase()}
+                            name={day.toLowerCase() + "Checked"}
+                            checked={this.state[day.toLowerCase() + "Checked"]}
+                            onChange={this.handleInputChange}
+                            />
+                            <label htmlFor={day.toLowerCase()}>{day}</label>
+                        </div>
+                        ))}
+                    </div>
+
+                    <div className="start-end-container" id={"a-start-time"}>
+                        <label htmlFor={"start"}>Start Time:</label>
+                        <input
+                        type="time"
+                        id={"start"}
+                        name="startTime"
+                        value={this.state.startTime}
+                        onChange={this.handleInputChange}
+                        />
+
+                        <label htmlFor={"end"}>End Time:</label>
+                        <input
+                        type="time"
+                        id={"end"}
+                        name="endTime"
+                        value={this.state.endTime}
+                        onChange={this.handleInputChange}
+                        />
+                    </div>
+
+                    <select     // dropdown menu
+                        value={this.state.selectedSchedule}
+                        onChange={this.handleSelectSchedule}
+                    >
+                        <option value="">Select Schedule</option>
+                        {scheduleOptions}
+                    </select> 
+
+                    <div className="button-sub-div">
+                        <button
+                            onClick={this.handleSaveSchedule}
+                            className="base-button"
+                        >
+                            Save Schedule
+                        </button>
+
+                        <button
+                            onClick={() => {
+                                const { selectedSchedule } = this.state;
+                                if (selectedSchedule !== "") {
+                                    const updatedSchedules = this.state.schedules.filter(
+                                    (schedule, index) => index !== parseInt(selectedSchedule)
+                                    );
+
+                                    this.setState({
+                                    schedules: updatedSchedules,
+                                    selectedSchedule: "",
+                                    startTime: "",
+                                    endTime: "",
+                                    sundayChecked: false,
+                                    mondayChecked: false,
+                                    tuesdayChecked: false,
+                                    wednesdayChecked: false,
+                                    thursdayChecked: false,
+                                    fridayChecked: false,
+                                    saturdayChecked: false,
+                                    homeTemp: 70,
+                                    tempStyle: "F"
+                                    });
+                                }
+                            }}
+                            className="delete-button">
+                            Delete Schedule
+                        </button>
+                    </div>
+                </div>
+            );
+        }                    
     }
 }
-
 const container = document.getElementById('root');
 const root = ReactDOM.createRoot(container);
 root.render(<SmartHome />);

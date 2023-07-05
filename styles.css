@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @media only screen and (orientation: landscape){
     .base-button{
         background-color: aqua;
@@ -256,6 +257,242 @@
         text-align: center;
     
     }
+=======
+.base-button{
+    background-color: aqua;
+    border-color: cyan;
+    border-width: 7px;
+    height: 75px;
+    width: 150px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 15%;
+    font-weight: bold;
+}
+
+.base-button:hover{
+    transform: scale(1.05);
+}
+
+.home-button{
+    background-color: aqua;
+    border-color: cyan;
+    border-width: 7px;
+    height: 50px;
+    width: 100px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 30%;
+    font-weight: bold;
+}
+
+.home-button:hover{
+    transform: scale(1.05);
+}
+
+.top-div{
+    vertical-align: middle;
+    margin: 0 auto;
+    width: 95%;
+    padding-top: 2%;
+}
+
+.weather-img{
+    height: 50px;
+    width: 50px;
+    padding-left: 5px;
+}
+
+.weather-img:hover{
+    transform: scale(1.15);
+}
+
+.main-div{
+    display: grid;
+    grid-auto-flow: row;
+    height: 600px;
+    width: 900px;
+    border-style: solid;
+    border-color: black;
+    border-width: 5px;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.button-sub-div{
+   text-align: center;
+   display: grid;
+   grid-auto-flow: column;
+   align-items: center;
+   justify-content: center;
+   grid-gap: 5%;
+   padding-bottom: 10%;
+}
+
+.home-temp-div{
+    text-align: center;
+    height: 80%;
+}
+
+.fridge-temp-div{
+    text-align: center;
+    height: 80%;
+}
+
+.ac-hot-button{
+    color: white;
+    border-color: red;
+    background-color: red;
+    border-width: 7px;
+    font-size: 150%;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    font-weight: bold;
+}
+
+.ac-hot-button:hover{
+    transform: scale(1.05);
+}
+
+.ac-cool-button{
+    color: white;
+    border-color: cyan;
+    background-color: cyan;
+    border-width: 7px;
+    font-size: 150%;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    font-weight: bold;
+}
+
+.ac-cool-button:hover{
+    transform: scale(1.05);
+}
+
+.cel-far-button{
+    font-weight: bold;
+    background-color: white;
+    border-style: none;
+}
+
+.cel-far-button:hover{
+    transform: scale(1.15);
+    background: none;
+}
+
+#weather-span{
+    display: inline-block;
+    padding-top: 5%;
+    padding-left: 25%;
+}
+
+#preset-span{
+    padding-left: 5%;
+    display: inline-block;
+}
+
+.home-temp{
+    text-decoration: none;
+    color: black;
+    padding-left: 20px;
+    padding-right: 10px;
+    font-size: 500%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.fridge-temp{
+    text-decoration: none;
+    color: black;
+    padding-left: 20px;
+    padding-right: 10px;
+    font-size: 500%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#home-para{
+    height: 30px;
+    font-size: 200%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#fridge-para{
+    height: 30px;
+    font-size: 200%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#homeCelButton{
+    color: grey;
+}
+
+#weather-temp{
+
+}
+
+#weather-city{
+    padding-left: 0%;
+}
+#weather-city-page{
+    margin-top: 2%;
+    margin-left: 70%;
+}
+
+#clock-span{
+    display: inline-block;
+    padding-left: 25.6%;
+    font-weight: bold;
+}
+
+#aq-span{
+    padding-bottom: 10%;
+    font-size: 400%;
+    display: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#gen-span{
+    font-size: 200%;
+    display: none;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+#filter-span{
+    display: inline-block;
+    padding-left: 70%;
+}
+
+
+.filter-img{
+    height: 50px;
+    width: 50px;
+}
+
+.thermometer{
+    text-align: center;
+}
+
+.ice{
+    height: 250px;
+    width: 500px;
+    margin-left: 200px;
+}
+
+.roomSelect{
+    position: absolute;
+    width: 110px;
+    top: 65px;
+    margin-left: 75%;
+}
+
+#add{
+    position: absolute;
+    top: 30px;
+    margin-left: 54%;
+>>>>>>> 4eeaad8c456cdab211b9c31f57461bd6337ddc43
     
 }
 
@@ -515,3 +752,58 @@
     }
     
 }
+<<<<<<< HEAD
+=======
+
+
+#delete{
+    position: absolute;
+    width: 110px;
+    top: 30px;
+    margin-left: 75%;
+}
+
+.therm{
+    text-align: center;
+
+}
+.checkbox-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 1%;
+}
+
+.start-end-container, .center-h1 {
+    display: flex;
+    justify-content: center;
+    gap: 1%;
+    margin-bottom: 1%;
+}
+
+.start-end-container {
+    height: 50%;
+}
+
+.room-selector {
+    display: flex;
+    justify-content: center;
+    gap: 1%;
+    margin-bottom: 1%;
+    height: 60%; 
+}
+
+.delete-button{
+    background-color: red;
+    border-color: darkred;
+    border-width: 7px;
+    height: 75px;
+    width: 150px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border-radius: 15%;
+    font-weight: bold;
+}
+.delete-button:hover{
+    transform: scale(1.05);
+}
+>>>>>>> 4eeaad8c456cdab211b9c31f57461bd6337ddc43
