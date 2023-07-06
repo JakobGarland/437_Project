@@ -264,11 +264,6 @@ class SmartHome extends React.Component{
                 <div className = "main-div">
                     
                     <div className="top-div">
-                        <span id="preset-span">
-                            <a>
-                                PRESET: DEFAULT
-                            </a>
-                        </span>
 
                         <span id="clock-span">
                             {
