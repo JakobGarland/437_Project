@@ -384,6 +384,7 @@ class SmartHome extends React.Component{
                 </div>
             );
         }
+        
         else if (this.state.page === 'Scheduling'){
             return(
                 <div className = "main-div">
@@ -391,9 +392,9 @@ class SmartHome extends React.Component{
                     <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
                     </div>
 
-                    <h1 className="center-h1">Scheduling Home Page</h1>
+                    <h1 className="center-h1">Scheduling Home Page</h1> {/* title */}
 
-                    <div className="button-sub-div">
+                    <div className="button-sub-div">    {/* Page Selection */}
                         <button onClick={() => { this.setState({ page: 'Climate' }) }} className="base-button">Climate</button>
                         <button onClick={() => { this.setState({ page: 'Garden' }) }} className="base-button">Garden</button>
                         <button onClick={() => { this.setState({ page: 'Appliances' }) }} className="base-button">Appliances</button>
@@ -401,7 +402,8 @@ class SmartHome extends React.Component{
                 </div>
             );
         }
-        else if (this.state.page === 'Climate') {
+
+        else if (this.state.page === 'Climate') {   // climate page
             const days = [
                 "Sunday",
                 "Monday",
@@ -411,6 +413,8 @@ class SmartHome extends React.Component{
                 "Friday",
                 "Saturday"
             ];
+
+            // seperates data saved into schedules and breaks them down into specific keys for indexing
             const scheduleOptions = this.state.schedules.map((schedule, index) => (
                 <option key={index} value={index}>
                     Schedule {index + 1} - Room: {schedule.room}, Temperature: {schedule.temperature}°{this.state.tempStyle}
@@ -421,7 +425,7 @@ class SmartHome extends React.Component{
                 <div className="main-div">
                     <div className="top-div">
                         <button
-                            onClick={() => {
+                            onClick={() => {    // navigate to scheduling page
                             this.setState({ page: "Scheduling" });
                             }}
                             className="home-button">Back
@@ -429,8 +433,8 @@ class SmartHome extends React.Component{
                     </div>
                     
 
-                    <div className="room-selector" id="c-add-room">
-                        <label htmlFor="newRoom">Add Room:</label>
+                    <div className="room-selector" id="c-add-room"> 
+                        <label htmlFor="newRoom">Add Room:</label> 
                         <input
                             type="text"
                             id="newRoom"
@@ -440,7 +444,7 @@ class SmartHome extends React.Component{
 
                         <button onClick={this.handleAddRoom} className="btn btn-primary">Add</button>
                         
-                        <select
+                        <select     // creates a dropdown menu to select stored rooms
                             value={this.state.selectedRoom}
                             onChange={(event) => {
                                 const selectedRoom = event.target.value;
@@ -459,6 +463,7 @@ class SmartHome extends React.Component{
                     <div className="home-temp-div">
                         <p id="home-para">Climate Schedule</p>
 
+                        {/* thermometer controls */}
                         <div id="temp-div">
                         <button
                             onClick={() => {
@@ -473,6 +478,7 @@ class SmartHome extends React.Component{
                             className="ac-hot-button">+</button>
                         </div>
 
+                        {/* converts Farenheit to Celsius */}
                         <button
                             id="homeCelButton"
                             onClick={() => {
@@ -490,6 +496,7 @@ class SmartHome extends React.Component{
 
                         <a>/</a>    
 
+                        {/* converts from C to F */}
                         <button
                         id="homeFahrButton"
                         onClick={() => {
@@ -508,6 +515,7 @@ class SmartHome extends React.Component{
                         </button>
                     </div>
 
+                    {/* checkboxes */}
                     <div className="checkbox-container" id="c-checkboxes">
                         {days.map((day) => (
                             <div key={day}>
@@ -515,7 +523,7 @@ class SmartHome extends React.Component{
                                 type="checkbox"
                                 id={day.toLowerCase()}
                                 name={day.toLowerCase() + "Checked"}
-                                checked={this.state[day.toLowerCase() + "Checked"]}
+                                checked={this.state[day.toLowerCase() + "Checked"]} // converts to lowercase to store
                                 onChange={this.handleInputChange}/>
 
                                 <label htmlFor={day.toLowerCase()}>{day}</label>
@@ -523,6 +531,7 @@ class SmartHome extends React.Component{
                         ))}
                     </div>
 
+                    {/* start/end windows */}
                     <div className="start-end-container">
                         <label htmlFor={"start"}>Start Time:</label>
                         <input
@@ -541,7 +550,7 @@ class SmartHome extends React.Component{
                         onChange={this.handleInputChange}/>
                     </div>
 
-                    <select
+                    <select     // dropdown menu
                         value={this.state.selectedSchedule}
                         onChange={this.handleSelectSchedule}>
 
@@ -587,7 +596,8 @@ class SmartHome extends React.Component{
                 </div>
             );
         }
-        else if (this.state.page === 'Garden') {
+
+        else if (this.state.page === 'Garden') {    // garden page
             const days = [
                 "Sunday",
                 "Monday",
@@ -597,6 +607,8 @@ class SmartHome extends React.Component{
                 "Friday",
                 "Saturday"
             ];
+
+            // seperates data saved into schedules and breaks them down into specific keys for indexing
             const scheduleOptions = this.state.schedules.map((schedule, index) => (
                 <option key={index} value={index}>
                 Schedule {index + 1}    {/* indexes schedule */}
@@ -607,7 +619,7 @@ class SmartHome extends React.Component{
                 <div className="main-div">                    
                     <div className="top-div">
                         <button
-                            onClick={() => {
+                            onClick={() => {    // navigate to scheduling page
                             this.setState({ page: "Scheduling" });
                             }}
                             className="home-button"
@@ -618,6 +630,7 @@ class SmartHome extends React.Component{
                     
                     <h1 className="center-h1">Garden Schedule</h1>
 
+                    {/* checkboxes */}
                     <div className="checkbox-container" id={"g-checkboxes"}>
                         {days.map((day) => (
                             <div key={day}>
@@ -633,6 +646,7 @@ class SmartHome extends React.Component{
                         ))}
                     </div>
 
+                    {/* start/end windows */}
                     <div className="start-end-container" id={"g-start-time"}>
                         <label htmlFor={"start"}>Start Time:</label>
                         <input
@@ -700,7 +714,8 @@ class SmartHome extends React.Component{
                 </div>
             );
         }
-        else if (this.state.page === 'Appliances') {
+
+        else if (this.state.page === 'Appliances') {    // climate page
             const days = [
                 "Sunday",
                 "Monday",
@@ -710,6 +725,8 @@ class SmartHome extends React.Component{
                 "Friday",
                 "Saturday"
             ];
+
+            // seperates data saved into schedules and breaks them down into specific keys for indexing
             const scheduleOptions = this.state.schedules.map((schedule, index) => (
                 <option key={index} value={index}>
                     Schedule {index + 1} - Room: {schedule.room}
@@ -720,7 +737,7 @@ class SmartHome extends React.Component{
                 <div className="main-div">
                     <div className="top-div">
                         <button
-                            onClick={() => {
+                            onClick={() => {    // navigate to scheduling page
                             this.setState({ page: "Scheduling" });
                             }}
                             className="home-button"
@@ -743,7 +760,7 @@ class SmartHome extends React.Component{
                         <button onClick={this.handleAddRoom} className="btn btn-primary">
                             Add
                         </button>
-                        <select
+                        <select // creates a dropdown menu to select stored rooms
                             value={this.state.selectedRoom}
                             onChange={(event) => {
                                 const selectedRoom = event.target.value;
@@ -759,6 +776,7 @@ class SmartHome extends React.Component{
                         </select>                        
                     </div>                    
 
+                    {/* checkboxes */}
                     <div className="checkbox-container" id={"a-checkboxes"}>
                         {days.map((day) => (
                         <div key={day}>
@@ -766,7 +784,7 @@ class SmartHome extends React.Component{
                             type="checkbox"
                             id={day.toLowerCase()}
                             name={day.toLowerCase() + "Checked"}
-                            checked={this.state[day.toLowerCase() + "Checked"]}
+                            checked={this.state[day.toLowerCase() + "Checked"]} // converts to lowercase to store
                             onChange={this.handleInputChange}
                             />
                             <label htmlFor={day.toLowerCase()}>{day}</label>
@@ -774,6 +792,7 @@ class SmartHome extends React.Component{
                         ))}
                     </div>
 
+                    {/* start/end windows */}
                     <div className="start-end-container" id={"a-start-time"}>
                         <label htmlFor={"start"}>Start Time:</label>
                         <input
@@ -841,7 +860,7 @@ class SmartHome extends React.Component{
                     </div>
                 </div>
             );
-        }                    
+        }           
     }
 }
 const container = document.getElementById('root');
