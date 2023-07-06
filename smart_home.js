@@ -35,6 +35,27 @@ class SmartHome extends React.Component{
         };
     }
 
+    componentDidMount() {   // for scheduling
+        // Load stored rooms and schedules from local storage
+        const storedRooms = localStorage.getItem('rooms');
+        const storedSchedules = localStorage.getItem('schedules');
+
+        if (storedRooms) {  // stores room from previous refresh
+            this.setState({ rooms: JSON.parse(storedRooms) });
+        }
+
+        if (storedSchedules) {  // stores schedules from previous refresh
+            this.setState({ schedules: JSON.parse(storedSchedules) });
+        }
+    }
+    
+    componentDidUpdate() {  // for scheduling
+        // Update local storage when rooms or schedules change
+        const { rooms, schedules } = this.state;
+        localStorage.setItem('rooms', JSON.stringify(rooms));
+        localStorage.setItem('schedules', JSON.stringify(schedules));
+    }
+
     handleAddRoom = (event) => {    // adds room
         event.preventDefault();
         const roomName = this.state.newRoom;
