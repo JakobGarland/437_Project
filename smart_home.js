@@ -35,7 +35,7 @@ class SmartHome extends React.Component{
         };
     }
 
-    handleAddRoom = (event) => {
+    handleAddRoom = (event) => {    // adds room
         event.preventDefault();
         const roomName = this.state.newRoom;
   
@@ -47,13 +47,13 @@ class SmartHome extends React.Component{
         }
     };
   
-    handleInputChange = (event) => {
+    handleInputChange = (event) => {    // keeps track of checkboxes marked
         const { name, value, type, checked } = event.target;
         const inputValue = type === 'checkbox' ? checked : value;
         this.setState({ [name]: inputValue });
     };
   
-    handleSaveSchedule = () => {
+    handleSaveSchedule = () => {    // saves current schedule
         const {
             startTime,
             endTime,
@@ -64,25 +64,29 @@ class SmartHome extends React.Component{
             thursdayChecked,
             fridayChecked,
             saturdayChecked,
+            homeTemp,
+            tempStyle
         } = this.state;
-        
-        const newSchedule = {
+      
+        const newSchedule = {       // creates a new schedule to replace after save
             startTime,
             endTime,
             days: {
-            Sunday: sundayChecked,
-            Monday: mondayChecked,
-            Tuesday: tuesdayChecked,
-            Wednesday: wednesdayChecked,
-            Thursday: thursdayChecked,
-            Friday: fridayChecked,
-            Saturday: saturdayChecked,
+                Sunday: sundayChecked,
+                Monday: mondayChecked,
+                Tuesday: tuesdayChecked,
+                Wednesday: wednesdayChecked,
+                Thursday: thursdayChecked,
+                Friday: fridayChecked,
+                Saturday: saturdayChecked,
+                homeTemp,
+                tempStyle
             },
             room: this.state.selectedRoom,
-            temperature: this.state.homeTemp, // Add temperature value to the new schedule
+            temperature: this.state.homeTemp
         };
-        
-        this.setState((prevState) => ({
+      
+        this.setState((prevState) => ({     // sets state for new schedule
             schedules: [...prevState.schedules, newSchedule],
             startTime: '',
             endTime: '',
@@ -98,43 +102,47 @@ class SmartHome extends React.Component{
         }));
     };
       
+      
   
-    handleSelectSchedule = (event) => {
+    handleSelectSchedule = (event) => {     // applies selected saved schedule
         const selectedScheduleIndex = event.target.value;
-
+      
         if (selectedScheduleIndex !== '') {
             const selectedSchedule = this.state.schedules[selectedScheduleIndex];
-
-            this.setState({     // saves schedule
+            const { startTime, endTime, room, temperature } = selectedSchedule;
+            const days = Object.keys(selectedSchedule.days).reduce(
+            (acc, key) => ({ ...acc, [key.toLowerCase() + 'Checked']: selectedSchedule.days[key] }),
+            {}
+            );
+        
+            this.setState({
                 selectedSchedule: selectedScheduleIndex,
-                startTime: selectedSchedule.startTime,
-                endTime: selectedSchedule.endTime,
-                sundayChecked: selectedSchedule.days.Sunday,
-                mondayChecked: selectedSchedule.days.Monday,
-                tuesdayChecked: selectedSchedule.days.Tuesday,
-                wednesdayChecked: selectedSchedule.days.Wednesday,
-                thursdayChecked: selectedSchedule.days.Thursday,
-                fridayChecked: selectedSchedule.days.Friday,
-                saturdayChecked: selectedSchedule.days.Saturday,
-                selectedRoom: selectedSchedule.room, // set the selected room
+                startTime,
+                endTime,
+                ...days,
+                selectedRoom: room,
+                homeTemp: temperature,
+                tempStyle: selectedSchedule.days.tempStyle
             });
         } 
-        else {      // erases schedule
-        this.setState({
-            selectedSchedule: '',
-            startTime: '',
-            endTime: '',
-            sundayChecked: false,
-            mondayChecked: false,
-            tuesdayChecked: false,
-            wednesdayChecked: false,
-            thursdayChecked: false,
-            fridayChecked: false,
-            saturdayChecked: false,
-            selectedRoom: '', // clear the selected room
-        });
+        else {
+            this.setState({     // if no saved schedule, default is a new schedule
+                selectedSchedule: '',
+                startTime: '',
+                endTime: '',
+                sundayChecked: false,
+                mondayChecked: false,
+                tuesdayChecked: false,
+                wednesdayChecked: false,
+                thursdayChecked: false,
+                fridayChecked: false,
+                saturdayChecked: false,
+                selectedRoom: '',
+                homeTemp: 70,
+                tempStyle: 'F'
+            });
         }
-    };    
+    }; 
 
     renderFridge(){
         if(this.state.freezer == 1){
