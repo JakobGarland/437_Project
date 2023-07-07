@@ -163,8 +163,8 @@ class SmartHome extends React.Component{
         }
     }; 
 
-    renderFridge(){
-        if(this.state.freezer == 1){
+    renderFridge(){      // renders the "Fridge" page after the button is clicked
+        if(this.state.freezer == 1){     // default first page showing thermostat for fridge compartment
             return(
                 <div id = "fridge">
                     <span className = "therm">
@@ -173,7 +173,7 @@ class SmartHome extends React.Component{
                     
                 </div>
             )
-        }else if(this.state.freezer == 2){
+        }else if(this.state.freezer == 2){     // cycles through various ice shapes whenever the button is clicked
             if(this.state.ice == 1){
                 this.state.ice = 2;
                 return(
@@ -197,7 +197,7 @@ class SmartHome extends React.Component{
                 );
             }
             
-        }else{
+        }else{      // displays thermostat for freezer compartment
             return(
                 <div id = "freezer">
                     <span className = "therm">
@@ -362,21 +362,20 @@ class SmartHome extends React.Component{
                 </div>
             );
         }
-        else if (this.state.page === 'Fridge'){
+        else if (this.state.page === 'Fridge'){     // html for the fridge page
             return(
                 <div className = "main-div">
                     <div className="top-div">
-                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
-                        <span id = "filter-span">
+                        <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>   
+                        <span id = "filter-span">  {/*icon showing status of filter*/}
                             <a id="filter-stat">Filter Status</a>
                             <img className = "filter-img" src = "imgs/filter-green.png"></img>
                         </span>
                     </div>
 
                     {this.renderFridge()}
-                    {console.log("Rendered" + this.state.freezer)}
 
-
+                    {/*buttons at the bottom of the page for various options in the fridge page*/}
                     <div className = "button-sub-div">
                         <button onClick={() => {
                             this.setState({freezer: 1})
@@ -396,13 +395,14 @@ class SmartHome extends React.Component{
                     </div>
                 );
         }
-        else if (this.state.page === 'A/C'){
+        else if (this.state.page === 'A/C'){ // page where A/C settings can be set for specific rooms in the house
             return(
                 <div className = "main-div">
                     <div className="top-div">
                         <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
                     
                     </div>
+                    {/*renders dropdown bar with option to add or delete rooms and individual thermostats corresponding to each room*/}
                     <Rooms></Rooms>
                 </div>
             );

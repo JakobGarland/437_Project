@@ -19,7 +19,7 @@ class Clock extends React.Component{
     }
 }
 
-class Therm extends React.Component{
+class Therm extends React.Component{  // thermostat component that uses local storage to save state even on page refresh
     constructor(props) {
         super(props);
         const storedState = JSON.parse(window.localStorage.getItem(this.props.name));
@@ -30,11 +30,11 @@ class Therm extends React.Component{
             fahr: "black"
         };
         if (!storedState) {
-            window.localStorage.setItem(this.props.name, JSON.stringify(this.state));
+            window.localStorage.setItem(this.props.name, JSON.stringify(this.state)); // stores instance each time a therm is constructed
         }
     }
 
-    componentWillReceiveProps(nextProps){
+    componentWillReceiveProps(nextProps){ // handles detection between different therms
         if(nextProps.name !== this.props.name){
             const storedState = JSON.parse(window.localStorage.getItem(nextProps.name));
             if(storedState){
@@ -65,7 +65,7 @@ class Therm extends React.Component{
     }
 
 
-    render(){
+    render(){ // html for therm component
         return(
             <div className="thermometer">
                 <p id="fridge-para">
@@ -116,7 +116,7 @@ class Therm extends React.Component{
     }
 }
 
-class Rooms extends React.Component {
+class Rooms extends React.Component { // dropdown menu component with option to add or delete rooms and renders in a new Therm component based on local storage
     constructor(props) {
       super(props);
       const storedRooms = localStorage.getItem('rooms');
@@ -127,20 +127,20 @@ class Rooms extends React.Component {
       };
     }
   
-    componentDidUpdate() {
+    componentDidUpdate() { // each time new information is updated, stores to local storage
       const { rooms } = this.state;
       localStorage.setItem('rooms', JSON.stringify(rooms));
     }
   
-    handleInputChange = (event) => {
+    handleInputChange = (event) => { 
       this.setState({newRoom: event.target.value});
     };
   
-    handleSelectChange = (event) => {
+    handleSelectChange = (event) => {  // handles switching between rooms
       this.setState({ selectedOption: event.target.value });
     };
   
-    handleAddRoom = () => {
+    handleAddRoom = () => { // renders new therm when new room is added and switches page to that room
       const { rooms, newRoom, selectedOption } = this.state;
       if (selectedOption === "Add Room" && newRoom.trim() !== "") {
         const updatedRooms = [...rooms, newRoom];
@@ -148,7 +148,7 @@ class Rooms extends React.Component {
       }
     };
 
-    handleDeleteRoom = (roomToDelete) => {
+    handleDeleteRoom = (roomToDelete) => { 
         const { rooms } = this.state;
         const updatedRooms = rooms.filter((room) => room !== roomToDelete);
         this.setState({ rooms: updatedRooms, selectedOption: "Add Room"});
@@ -165,16 +165,19 @@ class Rooms extends React.Component {
                 ))}
                 <option value="Add Room">Add Room</option>
             </select>
-            <span className = "therm"></span>
+            <span className = "therm"></span>  {/*creates a therm with name from user input*/}
                 <Therm name={selectedOption}></Therm>
             <span/>
-            {selectedOption === "Add Room" && (
+
+            {/*renders input field and button for adding new room*/}
+            {selectedOption === "Add Room" && (  
                 <div id = "add">
                 <input id="addField" type="text" value={newRoom} onChange={this.handleInputChange} />
                 <button id="addButton" onClick={this.handleAddRoom}>Add Room</button>
                 </div>
             )}
 
+            {/*adds delete button*/}
             {selectedOption !== "Add Room" && (
                 <div>
                     <button id = "delete" onClick={() => this.handleDeleteRoom(selectedOption)}>Delete Room</button>
