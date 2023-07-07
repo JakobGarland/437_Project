@@ -3,13 +3,11 @@ class SmartHome extends React.Component{
         super(props);
 
         this.state = {
+            // Items for home and weather page
             page:'Home', 
             homeTemp: 70, 
             cityTemp: null, 
-            tempStyle:'F', 
             weatherStyle:'F', 
-            clock: new Date(), 
-            loaded: false,
             cities:[], 
             currCity: 0, 
             cityNames:["Baltimore MD", "New York NY", "Las Vegas NV"], 
@@ -212,10 +210,12 @@ class SmartHome extends React.Component{
     }
 
 
-    loadWeather(page){
+    loadWeather(page){ // Function to load weather api
         $.getJSON('https://api.open-meteo.com/v1/forecast?latitude='+this.state.cities[this.state.currCity][0]+'&longitude='+this.state.cities[this.state.currCity][1]+'&current_weather=true&temperature_unit=fahrenheit&precipitation_unit=inch&windspeed_unit=mph&precipitation_unit=inch&hourly=temperature_2m,relativehumidity_2m,windspeed_10m,precipitation_probability,precipitation,weathercode', function(data) {
                 // JSON result comes in `data` variable
                 var code = data.hourly.weathercode[0];
+
+                // Weather codes for display img 
                 if (code === 95 || code === 96 || code === 99)
                 {
                     $(".weather-img").attr("src", "imgs/thunder.png")
@@ -235,7 +235,7 @@ class SmartHome extends React.Component{
                     $(".weather-img").attr("src", "imgs/overcast.png")
                 }
 
-                if (page === "weather")
+                if (page === "weather") // determines weather items loaded based on page
                 {
                     document.getElementById("weather-temp").innerHTML = data.current_weather.temperature+"°";
                     document.getElementById("aq-span").innerHTML = "Humidity: "+ data.hourly.relativehumidity_2m[167]+"%";
@@ -252,13 +252,15 @@ class SmartHome extends React.Component{
 
     render(){
 
+        // initialize array of cities for weather selection
         this.state.cities.push(["39.29", "-76.61"]);
         this.state.cities.push(["40.7143", "-74.006"]);
         this.state.cities.push(["36.175", "-115.1372"]);
 
+        // Homepage case
         if (this.state.page === 'Home')
         {
-            this.loadWeather("home");
+            this.loadWeather("home"); // Load weather for home page
 
             return(
                 <div className = "main-div">
@@ -282,9 +284,7 @@ class SmartHome extends React.Component{
                         <span className = "therm">
                             <Therm name="Home"></Therm>
                         </span>    
-                        
-
-                    <div className = "button-sub-div">
+                    <div className = "button-sub-div"> {/* Buttons for changing page */}
                         <button onClick={() => {this.setState({page: 'Fridge'})}} className="base-button">Fridge</button>
                         <button onClick={() => {this.setState({page: 'A/C'})}} className="base-button" >A/C</button>
                         <button onClick={() => {this.setState({page: 'Scheduling'})}} className="base-button" >Scheduling</button>
@@ -294,10 +294,13 @@ class SmartHome extends React.Component{
         }
         else if (this.state.page === 'Weather'){
             this.loadWeather("weather");
+
+            // Following return will load weather page
             return(
                 <div className = "main-div">
                     <div className="top-div">
                     <button onClick={() => {this.setState({page: 'Home'})}} className="home-button" >Back</button>
+                    {/* Dropdown menu for selecting a weather city which changes the state of the class */}
                     <select name= {this.state.cityNames[this.state.currCity]}id="weather-city-page" onClick={() => {
                             var choice = document.getElementById("weather-city-page").value;
                             if (choice === "Baltimore")
@@ -310,12 +313,14 @@ class SmartHome extends React.Component{
                             this.loadWeather("weather");
                         }
                         } >
+                        {/* Values for dropdown */}
                         <option value ="Baltimore">Baltimore MD</option>
                         <option value ="New York" >New York NY</option>
                         <option value ="Las Vegas">Las Vegas NV</option>
                     </select>
                     </div>
-
+                    
+                    {/** Central div on weather screen */}
                     <div className = "home-temp-div">
                         <div id="temp-div">
                         <img id="w-img" className = "weather-img" onClick={() => {this.setState({page: 'Weather'})}}></img>
@@ -324,6 +329,7 @@ class SmartHome extends React.Component{
                         </span>
                         <span id="aq-span" className="home-temp">
                         </span>
+                        {/** Values to be hidden and shown on button presses */}
                         <span id="gen-span" className="home-temp">
                             <p id="wind"></p>
                             <p id="precip"></p>
@@ -331,7 +337,8 @@ class SmartHome extends React.Component{
                         </span>
                         </div>
                     </div>
-
+                    
+                    {/** Button which change div content on press */}
                     <div className = "button-sub-div">
                         <button onClick={() => {
                             document.getElementById("weather-temp").style.display = "none";
